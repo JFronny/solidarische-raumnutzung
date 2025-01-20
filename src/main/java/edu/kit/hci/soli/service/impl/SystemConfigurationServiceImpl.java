@@ -1,10 +1,14 @@
 package edu.kit.hci.soli.service.impl;
 
+import edu.kit.hci.soli.domain.OpeningHours;
+import edu.kit.hci.soli.domain.SystemConfiguration;
 import edu.kit.hci.soli.repository.BookingsRepository;
 import edu.kit.hci.soli.repository.SystemConfigurationRepository;
 import edu.kit.hci.soli.service.SystemConfigurationService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class SystemConfigurationServiceImpl implements SystemConfigurationService {
@@ -33,5 +37,21 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
         if (!enabled) {
             bookingsRepository.deleteAllBookingsByGuests();
         }
+    }
+
+    @Override
+    public List<OpeningHours> getOpeningHours() {
+        return systemConfigurationRepository.getInstance().getOpeningHours();
+    }
+
+    @Override
+    @Transactional
+    public void setOpeningHours(List<OpeningHours> openingHours) {
+        systemConfigurationRepository.getInstance().setOpeningHours(openingHours);
+    }
+
+    @Override
+    public SystemConfiguration getConfigurationByRoomId(int roomId) {
+        return systemConfigurationRepository.findByRoomId(roomId);
     }
 }

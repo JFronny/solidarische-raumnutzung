@@ -14,6 +14,15 @@ public interface SystemConfigurationRepository extends Repository<SystemConfigur
      *
      * @return the {@link SystemConfiguration} instance.
      */
-    @Query("SELECT s FROM SystemConfiguration s")
+    @Query("SELECT s FROM SystemConfiguration s WHERE s.id = 1")
     SystemConfiguration getInstance();
+
+    /**
+     * Retrieves the {@link SystemConfiguration} instance for the specified room ID.
+     *
+     * @param roomId the ID of the room.
+     * @return the {@link SystemConfiguration} instance for the specified room ID.
+     */
+    @Query("SELECT s FROM SystemConfiguration s WHERE s.roomId = :roomId")
+    SystemConfiguration findByRoomId(int roomId);
 }

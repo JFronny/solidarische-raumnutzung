@@ -8,6 +8,16 @@
 @template.layout(page = new PageSpec("Index", "Soli"), context = context, layout = layout, content = @`
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            fetch('/api/${layout.getRoom().getId()}/opening-hours') // This part is probably wrong, but i have no idea what the correct way is
+                // The way it gets things like hours.dayOfWeek is probably wrong
+                .then(response => response.json())
+                .then(openingHours => {
+                    const businessHours = openingHours.map(hours => ({
+                        daysOfWeek: [hours.dayOfWeek], // Assuming dayOfWeek is 0 (Sunday) to 6 (Saturday)
+                        startTime: hours.openingTime,
+                        endTime: hours.closingTime
+                    }));
+
             const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
                 timeZone: '${context.getTimeZone().getID()}',
                 initialView: 'timeGridWeek',
@@ -48,9 +58,11 @@
                         && selectInfo.end < new Date(new Date().getTime() + 14 * 24 * 60 * 60 * 1000);
                 },
                 slotDuration: '00:15:00',
-                events: '/api/${layout.getRoom().getId()}/events'
+                events: '/api/${layout.getRoom().getId()}/events',
+                businessHours: businessHours
             });
 
+            calendar.setOption('businessHours', businessHours); // This line may be unnecessary
             calendar.render();
 
             setInterval(() => {
