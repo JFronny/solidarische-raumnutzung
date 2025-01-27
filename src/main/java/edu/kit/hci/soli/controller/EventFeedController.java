@@ -1,5 +1,7 @@
 package edu.kit.hci.soli.controller;
 
+import edu.kit.hci.soli.config.NIHCache;
+import edu.kit.hci.soli.config.SoliConfiguration;
 import edu.kit.hci.soli.config.security.SoliUserDetails;
 import edu.kit.hci.soli.domain.Room;
 import edu.kit.hci.soli.dto.CalendarEvent;
@@ -10,9 +12,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 /**
  * REST controller for generating the FullCalendar event feed.
@@ -21,16 +28,19 @@ import java.util.Optional;
 public class EventFeedController {
     private final BookingsService bookingsRepository;
     private final RoomService roomService;
+    private final SoliConfiguration soliConfiguration;
 
     /**
      * Constructs an EventFeedController with the specified {@link BookingsService}.
      *
      * @param bookingsRepository the service for managing bookings
      * @param roomService        the service for managing rooms
+     * @param soliConfiguration  the system configuration
      */
-    public EventFeedController(BookingsService bookingsRepository, RoomService roomService) {
+    public EventFeedController(BookingsService bookingsRepository, RoomService roomService, SoliConfiguration soliConfiguration) {
         this.bookingsRepository = bookingsRepository;
         this.roomService = roomService;
+        this.soliConfiguration = soliConfiguration;
     }
 
     /**
@@ -62,6 +72,42 @@ public class EventFeedController {
         }
 
         return bookingsRepository.getCalendarEvents(room.get(), start, end, principal == null ? null : principal.getUser());
+    }
+
+    private static final Pattern dtStart = Pattern.compile("DTSTART;VALUE=DATE:(\\d+)");
+    private static final Pattern dtEnd = Pattern.compile("DTEND;VALUE=DATE:(\\d+)");
+    private final NIHCache<String> holidays = new NIHCache<>(1000 * 60 * 60 * 12, this::fetchHolidays);
+
+    /**
+     * Fetches the holidays from an iCalendar source and modifies it to avoid all-day events.
+     * This is necessary since FullCalendar displays those kinds of events in a separate row,
+     * which isn't desirable here.
+     *
+     * @return the modified iCalendar
+     * @throws IOException if the HTTP request fails
+     * @throws InterruptedException if the thread is interrupted during the request
+     */
+    private String fetchHolidays() throws IOException, InterruptedException {
+        try (var hc = HttpClient.newBuilder().build()) {
+            String response = hc.send(
+                    HttpRequest.newBuilder().uri(soliConfiguration.getHolidayCalendarURL()).build(),
+                    HttpResponse.BodyHandlers.ofString()
+            ).body();
+            response = dtStart.matcher(response).replaceAll("DTSTART:$1T000000Z");
+            return dtEnd.matcher(response).replaceAll("DTEND:$1T234500Z");
+        }
+    }
+
+    /**
+     * Retrieves the holidays.
+     *
+     * @return the holidays in iCalendar format to be used by FullCalendar
+     * @throws Exception if it could not be retrieved
+     */
+    @GetMapping("/api/holidays.ics")
+    @ResponseBody
+    public String getHolidays() throws Exception {
+        return holidays.getWithException();
     }
 
     /**

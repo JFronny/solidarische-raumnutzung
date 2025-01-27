@@ -19,6 +19,7 @@ services:
       KIT_MAIL_PASSWORD: ""
       DB_URL: jdbc:postgresql://database:5432/
       SOLI_TIME_ZONE: "Europe/Berlin"
+      SOLI_HOLIDAY_CALENDAR_URL: "https://www.thunderbird.net/media/caldata/autogen/GermanHolidays.ics"
 
   watchtower:
     image: containrrr/watchtower

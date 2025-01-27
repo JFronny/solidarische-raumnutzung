@@ -57,7 +57,12 @@
                 slotMaxTime: '${layout.getRoom().getOpeningHours().values().stream().map(TimeTuple::getEnd).max(Comparator.naturalOrder()).orElseThrow().toString()}',
                 eventSources: [
                     '/api/${layout.getRoom().getId()}/events',
-                    'https://www.thunderbird.net/media/caldata/autogen/GermanHolidays.ics'
+                    {
+                        url: '/api/holidays.ics',
+                        format: 'ics',
+                        display: 'background',
+                        className: 'calendar-event-holiday'
+                    }
                 ],
                 businessHours: [
                     <%-- To future readers: a REST endpoint to generate this would be nicer and I know that FullCalendar supports this. --%>
