@@ -17,6 +17,7 @@
                 nowIndicator: true,
                 weekends: false,
                 allDaySlot: false,
+                height: "75vh",
                 locale: navigator.language,
                 slotLabelFormat: {
                     hour: '2-digit',
@@ -82,7 +83,7 @@
         });
     </script>
 
-    <div id="calendar" class="w-full"></div>
+    <div id="calendar" class="w-full h-5/6"></div>
 
     <noscript class="w-full">
         <h1 class="text-center">

@@ -99,7 +99,7 @@
 
                 <div class="p-4">
                     <div class="card bg-base-100 w-full shadow-xl p-4">
-                        <div class="card-body">
+                        <div class="card-body h-full w-full">
                             ${content}
                         </div>
                     </div>
