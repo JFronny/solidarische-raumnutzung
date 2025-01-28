@@ -39,6 +39,12 @@ public class JteContext implements LocalizationSupport {
     }
 
     @Override
+    public Content localize(String key) {
+        String result = messageSource.getMessage(key, null, locale);
+        return output -> output.writeUserContent(result);
+    }
+
+    @Override
     public Content localize(String key, Object... params) {
         String result = messageSource.getMessage(key, params, locale);
         return output -> output.writeUserContent(result);

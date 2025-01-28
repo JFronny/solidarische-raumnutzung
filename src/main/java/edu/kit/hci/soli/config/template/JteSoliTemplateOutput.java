@@ -12,7 +12,8 @@ public class JteSoliTemplateOutput extends OwaspHtmlTemplateOutput {
     private static final Set<String> nonNlTags = Set.of(
             "script", // Parent class has special handling for script tags.
             "textarea", // In HTML, the content of a textarea is taken as literal text. Do not insert line breaks.
-            "pre" // In HTML, the content of a pre tag is taken as literal text. Do not insert line breaks.
+            "pre", // In HTML, the content of a pre tag is taken as literal text. Do not insert line breaks.
+            "style" // Style is not HTML, do not insert line breaks
     );
 
     private final TemplateOutput templateOutput;
