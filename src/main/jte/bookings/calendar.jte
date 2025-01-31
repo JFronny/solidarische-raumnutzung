@@ -17,6 +17,33 @@
                 nowIndicator: true,
                 weekends: false,
                 allDaySlot: false,
+                displayEventTime: false,
+                eventContent: function(arg) {
+                    let sticky_container = document.createElement('div');
+                    sticky_container.className += 'fc-event-title-container';
+
+                    let sticky = document.createElement('div');
+                    sticky.className += 'fc-event-title fc-sticky';
+                    sticky_container.appendChild(sticky);
+
+                    let icon = document.createElement('i');
+
+                    let arrayOfDomNodes = [ sticky_container, icon]
+
+                    if (arg.event.extendedProps.shareRoomType === 'YES') {
+                        icon.className += 'fa-solid fa-users';
+                    } else if (arg.event.extendedProps.shareRoomType === 'NO') {
+                        icon.className += 'fa-solid fa-users-slash';
+                    } else {
+                        icon.className += 'fa-solid fa-question';
+                        let icon2 = document.createElement('i');
+                        icon2.className += 'fa-solid fa-users';
+                        arrayOfDomNodes.push(icon2);
+                    }
+
+                    return { domNodes: arrayOfDomNodes }
+                }
+                ,
                 locale: navigator.language,
                 slotLabelFormat: {
                     hour: '2-digit',

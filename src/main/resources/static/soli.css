@@ -108,10 +108,6 @@
     color: inherit !important;
 }
 
-.fc-event-time {
-    display: none;
-}
-
 .fc-event-title {
     padding-bottom: 2px;
 }
@@ -175,40 +171,6 @@
     border-width: 1px;
     /*background-color: oklch(var(--color-primary)/var(--tw-bg-opacity));*/
     color: oklch(var(--color-primary-content)/var(--tw-text-opacity));
-}
-
-/* Render the sharing type using a FontAwesome icon (injected in layout.jte) */
-.calendar-event-yes .fc-event-title-container::after {
-    content: "\f0c0"; /* fa-users */
-    font-family: 'Font Awesome 5 Free';
-    font-display: block;
-    font-style: normal;
-    font-variant: normal;
-    line-height: 1;
-    text-rendering: auto;
-    font-weight: 700;
-}
-
-.calendar-event-no .fc-event-title-container::after {
-    content: "\e073"; /* fa-users-slash */
-    font-family: 'Font Awesome 5 Free';
-    font-display: block;
-    font-style: normal;
-    font-variant: normal;
-    line-height: 1;
-    text-rendering: auto;
-    font-weight: 700;
-}
-
-.calendar-event-on_request .fc-event-title-container::after {
-    content: "\e592"; /* fa-users-line */
-    font-family: 'Font Awesome 5 Free';
-    font-display: block;
-    font-style: normal;
-    font-variant: normal;
-    line-height: 1;
-    text-rendering: auto;
-    font-weight: 700;
 }
 
 /* Simple bar charts */
