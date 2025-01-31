@@ -1,5 +1,6 @@
 @import edu.kit.hci.soli.domain.Booking
 @import edu.kit.hci.soli.config.template.JteContext
+@import edu.kit.hci.soli.domain.ShareRoomType
 @import org.springframework.security.web.csrf.CsrfToken
 @import static org.springframework.http.HttpMethod.*
 @import java.time.format.DateTimeFormatter
@@ -16,6 +17,15 @@
     <i class="fa-solid fa-download"></i>
 </a>
 
+<div class="absolute top-5 left-5">
+    @if(booking.getShareRoomType() == ShareRoomType.YES)
+        <i class="fa-solid fa-users"></i>
+    @elseif(booking.getShareRoomType() == ShareRoomType.NO)
+        <i class="fa-solid fa-users-slash"></i>
+    @else
+        <i class="fa-solid fa-users-line"></i>
+    @endif
+</div>
 
 <p>${context.localize("bookings.start.value", context.format(booking.getStartDate()))}</p>
 <p>${context.localize("bookings.end.value", context.format(booking.getEndDate()))}</p>
