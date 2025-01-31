@@ -31,6 +31,7 @@
     --color-neutral: rgb(64, 64, 64);
     --color-neutral-content: oklch(92% 0.004 286.32);
     --color-info: rgb(35, 161, 224);
+    --color-info-rgb: 35, 161, 224; /* Needed for semi-transparent calendar events. DO NOT REMOVE! */
     --color-info-content: oklch(29% 0.066 243.157);
     --color-success: rgb(140, 182, 60);
     --color-success-content: oklch(37% 0.077 168.94);
@@ -64,6 +65,7 @@
         --color-neutral: rgb(64, 64, 64);
         --color-neutral-content: oklch(92% 0.004 286.32);
         --color-info: rgb(35, 161, 224);
+        --color-info-rgb: 35, 161, 224; /* Needed for semi-transparent calendar events. DO NOT REMOVE! */
         --color-info-content: oklch(29% 0.066 243.157);
         --color-success: rgb(140, 182, 60);
         --color-success-content: oklch(37% 0.077 168.94);
@@ -101,6 +103,14 @@
 .calendar-event-lowest {
     background-color: var(--color-info);
     color: var(--color-info-content);
+}
+
+.calendar-event-holiday {
+    background-color: rgba(var(--color-info-rgb), 0.3) !important;
+    /* Since we add transparency to our background, our theme color becomes hard to read either in light or dark mode */
+    /* As such, we use the system-default color instead, which should be easier to read :) */
+    /*color: var(--color-info-content) !important;*/
+    opacity: 1 !important;
 }
 
 /* Tweak event formatting to prevent overflow and ensure pleasant padding */

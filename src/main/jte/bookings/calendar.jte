@@ -9,6 +9,12 @@
 @param LayoutParams layout
 
 @template.layout(page = new PageSpec("Index", "Soli"), context = context, layout = layout, content = @`
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.15/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@6.1.15/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.15/index.global.min.js"></script> <%-- dependency of timegrid --%>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@6.1.15/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ical.js@1.5.0/build/ical.min.js"></script> <%-- dependency of fc/icalendar --%>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/icalendar@6.1.15/index.global.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
@@ -57,7 +63,12 @@
                 slotMaxTime: '${layout.getRoom().getOpeningHours().values().stream().map(TimeTuple::getEnd).max(Comparator.naturalOrder()).orElseThrow().toString()}',
                 eventSources: [
                     '/api/${layout.getRoom().getId()}/events',
-                    'https://www.thunderbird.net/media/caldata/autogen/GermanHolidays.ics'
+                    {
+                        url: '/api/holidays.ics',
+                        format: 'ics',
+                        display: 'background',
+                        className: 'calendar-event-holiday'
+                    }
                 ],
                 businessHours: [
                     <%-- To future readers: a REST endpoint to generate this would be nicer and I know that FullCalendar supports this. --%>

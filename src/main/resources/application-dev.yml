@@ -13,3 +13,4 @@ soli:
   hostname: "http://localhost:8080"
   development-mode: true
   time-zone: "Europe/Berlin"
+  holiday-calendar-url: "https://www.thunderbird.net/media/caldata/autogen/GermanHolidays.ics"

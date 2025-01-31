@@ -11,3 +11,4 @@ soli:
   hostname: "${SOLI_HOSTNAME}"
   development-mode: false
   time-zone: "${SOLI_TIME_ZONE}"
+  holiday-calendar-url: "${SOLI_HOLIDAY_CALENDAR_URL}"
